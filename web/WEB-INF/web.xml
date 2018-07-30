@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
     <servlet>
-        <servlet-name>HelloWorld</servlet-name>
-        <servlet-class>com.zlzhang.hello.HelloWorld</servlet-class>
+        <servlet-name>StockServer</servlet-name>
+        <servlet-class>com.zlzhang.server.StockServer</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>HelloWorld</servlet-name>
-        <url-pattern>/com.zlzhang.hello.HelloWorld</url-pattern>
+        <servlet-name>StockServer</servlet-name>
+        <url-pattern>/com.zlzhang.server.StockServer</url-pattern>
     </servlet-mapping>
 
 </web-app>
