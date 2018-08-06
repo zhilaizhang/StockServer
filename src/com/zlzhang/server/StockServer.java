@@ -112,32 +112,30 @@ public class StockServer extends HttpServlet{
         connection = DBDao.getConnection();
         // 获取Statement
         Statement stmt = connection.createStatement();
-        
         List<StockModel> stockModels = mGson.fromJson(stocks, new TypeToken<List<StockModel>>(){}.getType());
+        boolean isAddSucceed = false;
         if (stockModels != null) {
             for (StockModel stockModel : stockModels) {
-                String insertSql = "insert into tb_stock(code, name, todayOpen, yesterdayClose, todayHighest, todayLowest, dealNum, OBV, date, " +
-                        "time) values(" + stockModel.getCode() + "," + stockModel.getName() + "," + stockModel.getTodayOpen() + "," +
-                        stockModel.getYesterdayClose() + "," + stockModel.getTodayHighest() + "," + stockModel.getTodayLowest() + "," + stockModel.getDealNum() +
-                        "," + stockModel.getOBV() + "," + stockModel.getDate() + "," + stockModel.getTime() + ")";
-
                 String insertSql1 = "INSERT INTO `db_stock`.`tb_stock` (`code`, `name`, `todayOpen`, `yesterdayClose`, `nowPrice`, `todayHighest`, `todayLowest`, `dealNum`, `OBV`, `date`, `time`) VALUES ";
                 String vulueSql = "'"  + stockModel.getCode() + "','" + stockModel.getName() + "','" + stockModel.getTodayOpen() + "','" +
                         stockModel.getYesterdayClose() + "','" + stockModel.getNowPrice() + "','" + stockModel.getTodayHighest() + "','" + stockModel.getTodayLowest() + "','" + stockModel.getDealNum() +
                         "','" + stockModel.getOBV() + "','" + stockModel.getDate() + "','" + stockModel.getTime() + "'";
                 String resultSql = insertSql1 + "(" +vulueSql + ")";
-              boolean isSucced =   stmt.execute(resultSql);
+                isAddSucceed =   stmt.execute(resultSql);
             }
         }
-
-        String testSql = "INSERT INTO `db_stock`.`tb_stock` (`code`, `name`, `todayOpen`, `yesterdayClose`, `nowPrice`, `todayHighest`, `todayLowest`, `dealNum`, `OBV`, `date`, `time`) VALUES ('2324', '21312', '124', '1214', '12', '2414', '12', '1241', '1241241', '1234', '12')";
-
-
         stmt.close();
         connection.close();
+        int code = -1;
+        if (isAddSucceed) {
+            code = 0;
+        }
+        String response = "{\"code\":\"" + code + "\"}";
         //设置逻辑实现
         PrintWriter out = resp.getWriter();
-        out.println("<h3>" + message + "ok" + "</h3>");
+        out.write(response);
+//        out.println("<h3>" + message + "ok" + "</h3>");
+        out.close();
     }
 
     private void addStockAction(){

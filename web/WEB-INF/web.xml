@@ -3,14 +3,45 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-    <servlet>
-        <servlet-name>StockServer</servlet-name>
-        <servlet-class>com.zlzhang.server.StockServer</servlet-class>
-    </servlet>
 
+    <!--添加当天所有股票信息-->
+    <servlet>
+        <servlet-name>AddStockListAction</servlet-name>
+        <servlet-class>com.zlzhang.server.AddStockListAction</servlet-class>
+    </servlet>
     <servlet-mapping>
-        <servlet-name>StockServer</servlet-name>
-        <url-pattern>/com.zlzhang.server.StockServer</url-pattern>
+        <servlet-name>AddStockListAction</servlet-name>
+        <url-pattern>/com.zlzhang.server.AddStockListAction</url-pattern>
+    </servlet-mapping>
+
+    <!--添加所有股票基本信息，id， code，name-->
+    <servlet>
+        <servlet-name>AddStockInfoAction</servlet-name>
+        <servlet-class>com.zlzhang.server.AddStockInfoAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddStockInfoAction</servlet-name>
+        <url-pattern>/com.zlzhang.server.AddStockInfoAction</url-pattern>
+    </servlet-mapping>
+
+    <!--根据时间获取所有的股票信息-->
+    <servlet>
+        <servlet-name>GetAllStocksAction</servlet-name>
+        <servlet-class>com.zlzhang.server.GetAllStocksAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAllStocksAction</servlet-name>
+        <url-pattern>/com.zlzhang.server.GetAllStocksAction</url-pattern>
+    </servlet-mapping>
+
+    <!--根据时间获取单个股票信息-->
+    <servlet>
+        <servlet-name>GetStockByIdAction</servlet-name>
+        <servlet-class>com.zlzhang.server.GetStockByIdAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetStockByIdAction</servlet-name>
+        <url-pattern>/com.zlzhang.server.GetStockByIdAction</url-pattern>
     </servlet-mapping>
 
 </web-app>
