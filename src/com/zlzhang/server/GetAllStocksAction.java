@@ -31,41 +31,39 @@ public class GetAllStocksAction extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/json");
-        StringBuffer jb = new StringBuffer();
-        String line = null;
+        Map map = request.getParameterMap();
+        String[] startTimes = (String[]) map.get("startTime");
+        String startTime = startTimes[0];
+        String[] endTimes = (String[]) map.get("endTime");
+        String endTime = endTimes[0];
         try {
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null)
-                jb.append(line);
-        } catch (Exception e) { /*report an error*/ }
-        try {
-            getAllStocks(jb.toString(), resp);
+            getAllStocks(startTime, endTime, resp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
-    private void getAllStocks(String key, HttpServletResponse resp) throws IOException, SQLException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+
+    private void getAllStocks(String startTime, String endTime, HttpServletResponse resp) throws IOException, SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
         connection = DBDao.getConnection();
         // 获取Statement
         Statement stmt = connection.createStatement();
         int addNum = -1;
-        String startTime = "2018-07-30";
-        String endTime = "2018-07-30";
-
 
         String basesql = "SELECT * FROM `db_stock`.`tb_stock` where  date BETWEEN ";
         String valueSql = "'"  + startTime + "'" + " and " + "'" +  endTime + "'";
         String resultSql = basesql + valueSql;
 
-//        String basesql = "SELECT * FROM `db_stock`.`tb_stock` where  DATE_FORMAT(date,'%Y%m%d') BETWEEN ";
-//        String valueSql = "'"  + startTime + "'" + " and " + "'" +  endTime + "'";
-//        String resultSql = basesql + valueSql;
         ResultSet resultSet =  stmt.executeQuery(resultSql);
         resultSet.getFetchSize();
         List stockModels = convertList(resultSet);
