@@ -1,9 +1,8 @@
 package com.zlzhang.server;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.zlzhang.modle.ResultData;
-import com.zlzhang.modle.StockModel;
+import com.zlzhang.stockmodel.ResultData;
+import com.zlzhang.stockmodel.StockModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -71,7 +70,8 @@ public class GetAllStocksAction extends HttpServlet {
         ResultData resultData = new ResultData();
         if (listMap != null) {
             resultData.setCode(0);
-            resultData.setResult(listMap);
+            String result = mGson.toJson(listMap);
+            resultData.setResult(result);
         } else {
             resultData.setCode(-1);
             resultData.setResult(null);

@@ -2,7 +2,7 @@ package com.zlzhang.server;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.zlzhang.modle.StockModel;
+import com.zlzhang.stockmodel.StockModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -44,4 +44,14 @@
         <url-pattern>/com.zlzhang.server.GetStockByIdAction</url-pattern>
     </servlet-mapping>
 
+    <!--获取连涨的股票信息-->
+    <servlet>
+        <servlet-name>GetContinueRiseStocksAction</servlet-name>
+        <servlet-class>com.zlzhang.server.GetContinueRiseStocksAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetContinueRiseStocksAction</servlet-name>
+        <url-pattern>/com.zlzhang.server.GetContinueRiseStocksAction</url-pattern>
+    </servlet-mapping>
+
 </web-app>

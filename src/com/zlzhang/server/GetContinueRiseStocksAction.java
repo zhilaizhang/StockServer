@@ -1,15 +1,16 @@
 package com.zlzhang.server;
 
 import com.google.gson.Gson;
+import com.zlzhang.stockmodel.ContinueRiseModel;
 import com.zlzhang.stockmodel.ResultData;
 import com.zlzhang.stockmodel.StockModel;
+import com.zlzhang.utils.ContinueRiseUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -18,8 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/GetStockByIdAction")
-public class GetStockByIdAction extends HttpServlet {
+/**
+ * 根据天数获取连涨的股票
+ */
+@WebServlet("/GetContinueRiseStocksAction")
+public class GetContinueRiseStocksAction extends HttpServlet {
 
     private Gson mGson;
 
@@ -34,48 +38,45 @@ public class GetStockByIdAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/json");
         Map map = request.getParameterMap();
-        String[] startTimes = (String[]) map.get("startTime");
-        String startTime = startTimes[0];
-        String[] endTimes = (String[]) map.get("endTime");
-        String endTime = endTimes[0];
-        String[] codes = (String[]) map.get("code");
-        String code = codes[0];
+        String[] days = (String[]) map.get("days");
+        int  day = Integer.parseInt(days[0]);
         try {
-            getStockById(code, startTime, endTime, resp);
+            getAllStocks(day, resp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
 
     }
 
-    private void getStockById(String code, String startTime, String endTime, HttpServletResponse resp) throws IOException, SQLException {
+
+
+    private void getAllStocks(int day, HttpServletResponse resp) throws IOException, SQLException {
+       String startTime = "2018-07-01";
+       String endTime = "2018-08-14";
         Connection connection = null;
         PreparedStatement ps = null;
         connection = DBDao.getConnection();
         // 获取Statement
         Statement stmt = connection.createStatement();
-
+        int addNum = -1;
 
         String basesql = "SELECT * FROM `db_stock`.`tb_stock` where  date BETWEEN ";
-        String valueSql = "'"  + startTime + "'" + " and " + "'" +  endTime + "'" + " and code = " + "'" + code + "'";
+        String valueSql = "'"  + startTime + "'" + " and " + "'" +  endTime + "'";
         String resultSql = basesql + valueSql;
 
         ResultSet resultSet =  stmt.executeQuery(resultSql);
         resultSet.getFetchSize();
         List stockModels = convertList(resultSet);
         Map<String, List<StockModel>> listMap = changeToStockModel(stockModels);
+        List<ContinueRiseModel> continueRiseModels = ContinueRiseUtils.calculateContinueRiseStock(listMap);
         ResultData resultData = new ResultData();
         if (listMap != null) {
             resultData.setCode(0);
-            String result = mGson.toJson(listMap);
+            String result = mGson.toJson(continueRiseModels);
             resultData.setResult(result);
         } else {
             resultData.setCode(-1);
-            resultData.setResult(null);
+            resultData.setResult("");
         }
         String result = mGson.toJson(resultData);
 
