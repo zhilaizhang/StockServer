@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ZLUtils">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/ZLUtils.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.zlzhang.stockmodel.ContinueRiseModel;
 import com.zlzhang.stockmodel.ResultData;
 import com.zlzhang.stockmodel.StockModel;
+import com.zlzhang.util.DateUtil;
 import com.zlzhang.utils.ContinueRiseUtils;
 
 import javax.servlet.ServletException;
@@ -13,11 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
 /**
  * 根据天数获取连涨的股票
@@ -51,8 +51,10 @@ public class GetContinueRiseStocksAction extends HttpServlet {
 
 
     private void getAllStocks(int day, HttpServletResponse resp) throws IOException, SQLException {
-       String startTime = "2018-07-01";
-       String endTime = "2018-08-14";
+        Date nowDate = new Date(System.currentTimeMillis());
+        Date beforeDate = DateUtil.getBeforeDate(nowDate, day);
+        String startTime = DateUtil.getDateString(beforeDate, "yyyy-MM-dd");
+        String endTime = DateUtil.getDateString(nowDate, "yyyy-MM-dd");
         Connection connection = null;
         PreparedStatement ps = null;
         connection = DBDao.getConnection();

@@ -45,5 +45,7 @@
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.1" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="library" name="ZLStockModel" level="project" />
+    <orderEntry type="library" name="ZLUtils" level="project" />
+    <orderEntry type="library" name="ZLUtils (2)" level="project" />
   </component>
 </module>
