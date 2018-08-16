@@ -6,12 +6,13 @@ import java.util.Timer;
 
 public class TimerManager {
     //时间间隔
-    private static final long PERIOD_DAY = 24 * 60 * 60 * 1000;
+//    private static final long PERIOD_DAY = 24 * 60 * 60 * 1000;
+    private static final long PERIOD_DAY = 10 * 1000;
     public TimerManager() {
         Calendar calendar = Calendar.getInstance();
 
 
-        calendar.set(Calendar.HOUR_OF_DAY, 16);
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
         calendar.set(Calendar.MINUTE, 10);
         calendar.set(Calendar.SECOND, 0);
 
@@ -29,7 +30,8 @@ public class TimerManager {
 
         NFDFlightDataTimerTask task = new NFDFlightDataTimerTask();
         //安排指定的任务在指定的时间开始进行重复的固定延迟执行。
-        timer.schedule(task,date,PERIOD_DAY);
+//        timer.schedule(task,date,PERIOD_DAY);
+        timer.schedule(task,new Date(),PERIOD_DAY);
     }
 
     // 增加或减少天数

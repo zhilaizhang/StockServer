@@ -47,5 +47,6 @@
     <orderEntry type="library" name="ZLStockModel" level="project" />
     <orderEntry type="library" name="ZLUtils" level="project" />
     <orderEntry type="library" name="ZLUtils (2)" level="project" />
+    <orderEntry type="library" name="ZLStockModel (2)" level="project" />
   </component>
 </module>

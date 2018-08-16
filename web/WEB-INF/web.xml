@@ -54,4 +54,8 @@
         <url-pattern>/com.zlzhang.server.GetContinueRiseStocksAction</url-pattern>
     </servlet-mapping>
 
+
+    <listener>
+        <listener-class>com.zlzhang.timer.NFDFlightDataTaskListener</listener-class>
+    </listener>
 </web-app>
