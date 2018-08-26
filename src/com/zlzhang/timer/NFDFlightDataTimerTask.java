@@ -1,6 +1,7 @@
 package com.zlzhang.timer;
 
 import com.zlzhang.server.DBDao;
+import com.zlzhang.server.DBManager;
 import com.zlzhang.stockmodel.ResultData;
 import com.zlzhang.stockmodel.StockInfo;
 import com.zlzhang.stockmodel.StockModel;
@@ -18,36 +19,74 @@ import java.util.*;
 
 public class NFDFlightDataTimerTask  extends TimerTask {
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    private DBManager mDBManager;
+
+    public NFDFlightDataTimerTask(){
+        mDBManager = new DBManager();
+    }
+
     @Override
     public void run() {
         try {
             List<StockInfo> stockInfos = getAllStockCodes();
             List<StockModel> stockModels = null;
+            stockModels = new ArrayList<StockModel>();
+             
+            boolean isFirstStock = true;
             for (StockInfo stockInfo : stockInfos) {
-                stockModels = new ArrayList<StockModel>();
                 StockType stockType = StockUtils.judgeDetailExchange(stockInfo.getCode());
                 String position;
-                if (stockType == StockType.SZ) {
-                    position = "sz";
+                String stockCode;
+                if (stockInfo.getCode().contains("sh")  || stockInfo.getCode().contains("sz")) {
+                    stockCode = stockInfo.getCode();
                 } else {
-                    position = "sh";
+                    if (stockType == StockType.SH) {
+                        position = "sh";
+                    } else {
+                        position = "sz";
+                    }
+                    stockCode =  position + stockInfo.getCode();
                 }
-                String url = "http://hq.sinajs.cn/list=" + position + stockInfo.getCode();
+
+                String url = "http://hq.sinajs.cn/list=" + stockCode;
                 String result =  getHttpURLConnection(url, "");
                 if (result != null) {
                     StockModel stockModel = StockUtils.changeToModel(result);
+                    if (isFirstStock) {
+                        isFirstStock = false;
+                        if (isStockAdded(stockModel)) {
+                            return;
+                        }
+                    }
                     if (stockModel != null) {
                         stockModels.add(stockModel);
                     }
                 }
             }
             if (stockModels != null) {
+                System.out.println("-------------上传操作--------------" + stockModels.size());
                 //TODO 上传操作, 写一个测试数据表
-//                StockUtils.addStocksAction(stockModels);
+               boolean isAddSucceed =  mDBManager.addStocksAction1(stockModels);
+                System.out.println("-------------上传操作 isAddSucceed--------------" + isAddSucceed);
             }
         } catch (Exception e) {
             System.out.println("-------------解析信息发生异常--------------");
         }
+    }
+
+    /**
+     * 判断当天的股票是否已经添加
+     */
+    private boolean isStockAdded(StockModel stockModel){
+      String lastAddStockTime =  mDBManager.getLastStockAddTime();
+        if (stockModel == null || lastAddStockTime == null) {
+            return false;
+        }
+        if (stockModel.getDate().equals(lastAddStockTime)) {
+            return true;
+        }
+      return false;
     }
 
     private List<StockInfo> getAllStockCodes() throws SQLException {

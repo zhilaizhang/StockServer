@@ -1,14 +1,11 @@
 package com.zlzhang.utils;
 
 
-import com.google.gson.reflect.TypeToken;
 import com.zlzhang.server.DBDao;
 import com.zlzhang.stockmodel.StockModel;
 import com.zlzhang.stockmodel.StockType;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,19 +13,7 @@ import java.sql.Statement;
 import java.util.List;
 
 public class StockUtils {
-    /**
-     * 判断深证或者上证
-     * @param code
-     * @return
-     */
-    public static StockType judgeExchange(String code){
-        String startCode = code.substring(0, 2);
-        if (startCode.equals("60")) {
-            return StockType.SH;
-        } else {
-            return StockType.SZ;
-        }
-    }
+
 
     /**
      * 判断中小，创
@@ -36,6 +21,12 @@ public class StockUtils {
      * @return
      */
     public static StockType judgeDetailExchange(String code){
+        if (code.contains("sh")) {
+            return StockType.SH;
+        }
+        if (code.contains("sz")) {
+            return StockType.SZ;
+        }
         String startCode = code.substring(0, 2);
         if (startCode.equals("60")) {
             return StockType.SH;
@@ -84,7 +75,7 @@ public class StockUtils {
         int addNum = -1;
         if (stockModels != null) {
             for (StockModel stockModel : stockModels) {
-                String insertSql1 = "INSERT INTO `db_stock`.`tb_stock` (`code`, `name`, `todayOpen`, `yesterdayClose`, `nowPrice`, `todayHighest`, `todayLowest`, `dealNum`, `OBV`, `date`, `time`) VALUES ";
+                String insertSql1 = "INSERT INTO `db_stock`.`test_tb_stock` (`code`, `name`, `todayOpen`, `yesterdayClose`, `nowPrice`, `todayHighest`, `todayLowest`, `dealNum`, `OBV`, `date`, `time`) VALUES ";
                 String vulueSql = "'"  + stockModel.getCode() + "','" + stockModel.getName() + "','" + stockModel.getTodayOpen() + "','" +
                         stockModel.getYesterdayClose() + "','" + stockModel.getNowPrice() + "','" + stockModel.getTodayHighest() + "','" + stockModel.getTodayLowest() + "','" + stockModel.getDealNum() +
                         "','" + stockModel.getOBV() + "','" + stockModel.getDate() + "','" + stockModel.getTime() + "'";
@@ -100,4 +91,5 @@ public class StockUtils {
         }
         return false;
     }
+
 }
