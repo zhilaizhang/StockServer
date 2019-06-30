@@ -32,7 +32,7 @@ public class NFDFlightDataTimerTask  extends TimerTask {
             List<StockInfo> stockInfos = getAllStockCodes();
             List<StockModel> stockModels = null;
             stockModels = new ArrayList<StockModel>();
-             
+            System.out.println("-------------开始下载操作--------------" + stockModels.size());
             boolean isFirstStock = true;
             for (StockInfo stockInfo : stockInfos) {
                 StockType stockType = StockUtils.judgeDetailExchange(stockInfo.getCode());
@@ -56,6 +56,7 @@ public class NFDFlightDataTimerTask  extends TimerTask {
                     if (isFirstStock) {
                         isFirstStock = false;
                         if (isStockAdded(stockModel)) {
+                            System.out.println("-------------已添加过数据-------------" + stockModels.size());
                             return;
                         }
                     }
@@ -67,11 +68,11 @@ public class NFDFlightDataTimerTask  extends TimerTask {
             if (stockModels != null) {
                 System.out.println("-------------上传操作--------------" + stockModels.size());
                 //TODO 上传操作, 写一个测试数据表
-               boolean isAddSucceed =  mDBManager.addStocksAction1(stockModels);
+               boolean isAddSucceed =  mDBManager.addStocksAction(stockModels);
                 System.out.println("-------------上传操作 isAddSucceed--------------" + isAddSucceed);
             }
         } catch (Exception e) {
-            System.out.println("-------------解析信息发生异常--------------");
+            System.out.println("-------------解析信息发生异常--------------" + e.getMessage());
         }
     }
 

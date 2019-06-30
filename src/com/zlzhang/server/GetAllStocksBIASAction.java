@@ -78,6 +78,9 @@ public class GetAllStocksBIASAction extends HttpServlet {
             Map.Entry entry = (Map.Entry) map1it.next();
             String code = (String) entry.getKey();
             List<StockModel> stockModels = (List<StockModel>) entry.getValue();
+            if (stockModels == null || stockModels.size() == 0) {
+                continue;
+            }
             StockModel stockModel = stockModels.get(0);
             sortStocks(stockModels);
             float BIAS = BollUtil.getBIAS(stockModels);
@@ -86,6 +89,7 @@ public class GetAllStocksBIASAction extends HttpServlet {
             biasModel.setCode(code);
             biasModel.setName(stockModel.getName());
             biasModel.setDays(stockModels.size());
+            System.out.println("test------" + BIAS + " " + code + " " + stockModel.getName() + " " + stockModels.size());
             biasModels.add(biasModel);
         }
         return biasModels;

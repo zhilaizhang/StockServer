@@ -57,7 +57,7 @@ public class DBManager {
      * @return
      */
     public String getLastStockAddTime(){
-        String sqlValue = "SELECT * FROM `db_stock`.`test_tb_stock` order by id DESC limit 1";
+        String sqlValue = "SELECT * FROM `db_stock`.`tb_stock` order by id DESC limit 1";
         try {
             List stockModels = getResultSetBySql(sqlValue);
             StockModel stockModel = null;
@@ -137,7 +137,7 @@ public class DBManager {
         stockModel.setTodayOpen((Float) map.get("todayOpen"));
         stockModel.setName((String) map.get("name"));
         stockModel.setId((Integer) map.get("id"));
-        stockModel.setDealNum(Long.parseLong((String)map.get("dealNum")));
+        stockModel.setDealNum((Long)map.get("dealNum"));
         stockModel.setTime((String) map.get("time"));
         stockModel.setTodayHighest((Float) map.get("todayHighest"));
         stockModel.setTodayLowest((Float) map.get("todayLowest"));
@@ -160,7 +160,7 @@ public class DBManager {
         int addNum = -1;
         if (stockModels != null) {
             for (StockModel stockModel : stockModels) {
-                String insertSql1 = "INSERT INTO `db_stock`.`test_tb_stock` (`code`, `name`, `todayOpen`, `yesterdayClose`, `nowPrice`, `todayHighest`, `todayLowest`, `dealNum`, `OBV`, `date`, `time`) VALUES ";
+                String insertSql1 = "INSERT INTO `db_stock`.`tb_stock` (`code`, `name`, `todayOpen`, `yesterdayClose`, `nowPrice`, `todayHighest`, `todayLowest`, `dealNum`, `OBV`, `date`, `time`) VALUES ";
                 String vulueSql = "'"  + stockModel.getCode() + "','" + stockModel.getName() + "','" + stockModel.getTodayOpen() + "','" +
                         stockModel.getYesterdayClose() + "','" + stockModel.getNowPrice() + "','" + stockModel.getTodayHighest() + "','" + stockModel.getTodayLowest() + "','" + stockModel.getDealNum() +
                         "','" + stockModel.getOBV() + "','" + stockModel.getDate() + "','" + stockModel.getTime() + "'";
@@ -193,7 +193,7 @@ public class DBManager {
         Statement stmt = connection.createStatement();
         int addNum = -1;
         if (stockModels != null) {
-            String insertSql1 = "INSERT INTO `db_stock`.`test_tb_stock` (`code`, `name`, `todayOpen`, `yesterdayClose`, `nowPrice`, `todayHighest`, `todayLowest`, `dealNum`, `OBV`, `date`, `time`) VALUES ";
+            String insertSql1 = "INSERT INTO `db_stock`.`tb_stock` (`code`, `name`, `todayOpen`, `yesterdayClose`, `nowPrice`, `todayHighest`, `todayLowest`, `dealNum`, `OBV`, `date`, `time`) VALUES ";
             String values = "";
             int length = stockModels.size();
             for (int i = 0; i < stockModels.size(); i++) {

@@ -64,8 +64,14 @@ public class BollUtil {
      * @return
      */
     public static float getBIAS(List<StockModel> stockModels){
+        if (stockModels == null || stockModels.size() == 0) {
+            return 0;
+        }
         int length = stockModels.size();
         float MA = getMA(stockModels);
+        if (MA == 0) {
+            return 0;
+        }
         StockModel stockModel = stockModels.get(length - 1);
         return  (stockModel.getNowPrice() - MA) / MA;
     }

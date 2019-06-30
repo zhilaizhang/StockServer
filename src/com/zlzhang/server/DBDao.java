@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBDao {
-    private static String USER = "zlzhang";
-    private static String PASSWORD = "Zzl!@123";
-    private static String DB_URL = "jdbc:mysql://123.207.67.85:3306/db_stock";
+    private static String USER = "root";
+    private static String PASSWORD = "111111";
+    private static String DB_URL = "jdbc:mysql://localhost:3306/db_stock";
     private static String DB_DRIVER = "com.mysql.jdbc.Driver";
     //  private static String SQL = "";
     private static Connection connection = null;
